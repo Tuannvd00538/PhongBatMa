@@ -83,24 +83,4 @@ fs.readFile('./config.json', 'utf8', function (err,data) {
             listUser = [];
         }
     }, timeScan);
-
-    setInterval(() => {
-        for (let i = 0; i < listCmt.length; i++) {
-            var element = listCmt[i];
-            var name = element.split('/-name-/');
-            var id = name[1].split('/-id-/');
-            var cmtLog = "Kick User '" + name[0] + " (fb.com/" + id[0] + ")' | Comment '" + id[1] + "'";
-            if (cmtLog.trim() != "")
-                request("https://graph.facebook.com/" + idPostLog + "/comments/?method=post&message=" + encodeURI(cmtLog) + "&access_token=" + tokenFacebook, (err, res, body) => {
-                    json = JSON.parse(body);
-                    console.log(json)
-                    if (!(json["error"] == undefined || json["error"] == null)) {
-                        console.log("COMMENT '" + cmtLog + "' Thất bại");
-                    }
-
-                });
-            listCmt = listCmt.filter(item => item !== element);
-        }
-        listCmt = removeDuplicateUsingFilter(listCmt);
-    }, timeComment);
 });
